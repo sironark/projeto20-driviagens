@@ -5,3 +5,6 @@ export const createPassenger = Joi.object({
     lastName: Joi.string().required().min(2).max(100)
 });
 
+export const createCity = Joi.object({
+    name: Joi.string().required().min(2).max(50)
+});

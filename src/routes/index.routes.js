@@ -1,5 +1,6 @@
 import { Router } from "express";
-import passengerRouter from "./posts.routes.js";
+import passengerRouter from "./travle.routes.js";
+
 
 
 const router = Router();
