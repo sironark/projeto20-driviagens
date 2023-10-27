@@ -16,7 +16,7 @@ export default db;
 // Verifica a conexão com o banco de dados
 db.connect()
   .then(() => {
-    console.log("Successful conection at database!");
+    console.log("Successful conection to database!");
   })
   .catch((err) => {
     console.error("Conection error: ", err);
