@@ -12,6 +12,7 @@ export async function serviceCity(name){
 
 export async function serviceFlights(origin, destination, date){
     
+    
     const answare = await postFlightDB(origin, destination, date);
     const editDate =  converterDataFormato(answare.rows[0].date)
     const newAnsware = {
