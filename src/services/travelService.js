@@ -16,7 +16,8 @@ export async function serviceFlights(origin, destination, date){
     
     const currentData = dayjs();
     const receivedData = dayjs(converterDataDefault(date))
-   
+    console.log(receivedData)
+    
     if(receivedData.isBefore(currentData))throw incompleteDataError('erro na data da viagem');
     
     const verifyOrigin = await verifyCityByIdDB(origin);
@@ -25,12 +26,12 @@ export async function serviceFlights(origin, destination, date){
     if (!verifyOrigin.rowCount || !verifyDestination.rowCount) throw notFoundError();
 
     const answare = await postFlightDB(origin, destination, date);
-    const editDate =  converterDataFormato(answare.rows[0].date)
+    const editDate =  converterDataFormato(answare.rows[0].date);
     const newAnsware = {
         id: answare.rows[0].id,
         origin,
         destination,
-        date: editDate
+        date
     }
     
     return newAnsware
