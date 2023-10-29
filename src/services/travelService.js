@@ -16,7 +16,7 @@ export async function serviceFlights(origin, destination, date){
     
     const currentData = dayjs();
     const receivedData = dayjs(converterDataDefault(date))
-    console.log(receivedData)
+    
     
     if(receivedData.isBefore(currentData))throw incompleteDataError('erro na data da viagem');
     
@@ -31,7 +31,7 @@ export async function serviceFlights(origin, destination, date){
         id: answare.rows[0].id,
         origin,
         destination,
-        date
+        date: editDate
     }
     
     return newAnsware
