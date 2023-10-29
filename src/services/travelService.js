@@ -1,9 +1,10 @@
-import { conflictError } from "../errors/errors.js";
-import converterDataFormato from "../hooks/dateFormatHook.js";
-import { postCityDB, postFlightDB, verifyCity } from "../repository/posts.repository.js";
+import { conflictError, incompleteDataError, notFoundError } from "../errors/errors.js";
+import converterDataFormato, { converterDataDefault } from "./dateFormatService.js";
+import { postCityDB, postFlightDB, verifyCityByIdDB, verifyCityDB } from "../repository/posts.repository.js";
+import dayjs from "dayjs";
 
 export async function serviceCity(name){
-    const findCity = await verifyCity(name);
+    const findCity = await verifyCityDB(name);
     if(findCity.rowCount) throw conflictError();
 
     const answare = await postCityDB(name);
@@ -11,8 +12,18 @@ export async function serviceCity(name){
 }
 
 export async function serviceFlights(origin, destination, date){
+    if(origin === destination) throw conflictError();
     
+    const currentData = dayjs();
+    const receivedData = dayjs(converterDataDefault(date))
+   
+    if(receivedData.isBefore(currentData))throw incompleteDataError('erro na data da viagem');
     
+    const verifyOrigin = await verifyCityByIdDB(origin);
+    const verifyDestination = await verifyCityByIdDB(destination);
+    
+    if (!verifyOrigin.rowCount || !verifyDestination.rowCount) throw notFoundError();
+
     const answare = await postFlightDB(origin, destination, date);
     const editDate =  converterDataFormato(answare.rows[0].date)
     const newAnsware = {

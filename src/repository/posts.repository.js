@@ -18,11 +18,18 @@ export async function postCityDB(name) {
     RETURNING id, name;`,[name]);
 }
 
-export async function verifyCity(city){
+export async function verifyCityDB(city){
   return db.query(`
   SELECT * 
   FROM cities
   WHERE name = $1;`,[city]);
+}
+
+export async function verifyCityByIdDB(cityId){
+  return db.query(`
+  SELECT * 
+  FROM cities
+  WHERE id = $1;`,[cityId]);
 }
 
 export async function postFlightDB(origin, destination, date){
@@ -33,3 +40,4 @@ export async function postFlightDB(origin, destination, date){
   RETURNING id, origin, destination, date;`,
   [origin, destination, date]);
 }
+

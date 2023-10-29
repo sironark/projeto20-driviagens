@@ -6,7 +6,7 @@ export function incompleteDataError(message) {
     return { message, type: "incompleteData" };
 }
 
-export function conflictError(message = "Já existe"){
+export function conflictError(message = "Conflito"){
     return {type:"conflict", message};
 }
 
