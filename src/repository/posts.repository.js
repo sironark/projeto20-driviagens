@@ -62,3 +62,13 @@ export async function postTravelDB(passengerId, flightId){
   RETURNING id, "passengerId", "flightId";`,
   [passengerId, flightId]);
 }
+
+export async function getFlightsDB(){
+  return db.query(`SELECT 
+  f.id, c1.name AS origin, c2.name AS destination, to_char(f.date, 'DD-MM-YYYY') AS date
+  FROM flights f
+  JOIN cities c1 ON f.origin = c1.id 
+  JOIN cities c2 ON f.destination = c2.id
+  ORDER BY f.date
+  ;`)
+}
