@@ -72,3 +72,36 @@ export async function getFlightsDB(){
   ORDER BY f.date
   ;`)
 }
+
+export async function getFlightsQueryOriginDB(origin){
+  return db.query(`SELECT 
+  f.id, c1.name AS origin, c2.name AS destination, to_char(f.date, 'DD-MM-YYYY') AS date
+  FROM flights f
+  JOIN cities c1 ON f.origin = c1.id 
+  JOIN cities c2 ON f.destination = c2.id
+  WHERE c1.name = $1
+  ORDER BY f.date
+  ;`,[origin])
+}
+
+export async function getFlightsQueryDB(origin, destination){
+  return db.query(`SELECT 
+  f.id, c1.name AS origin, c2.name AS destination, to_char(f.date, 'DD-MM-YYYY') AS date
+  FROM flights f
+  JOIN cities c1 ON f.origin = c1.id 
+  JOIN cities c2 ON f.destination = c2.id
+  WHERE c1.name = $1 AND c2.name = $2
+  ORDER BY f.date
+  ;`,[origin, destination])
+}
+
+export async function getFlightsQueryDestinationDB(destination){
+  return db.query(`SELECT 
+  f.id, c1.name AS origin, c2.name AS destination, to_char(f.date, 'DD-MM-YYYY') AS date
+  FROM flights f
+  JOIN cities c1 ON f.origin = c1.id 
+  JOIN cities c2 ON f.destination = c2.id
+  WHERE c2.name = $1
+  ORDER BY f.date
+  ;`,[destination])
+}

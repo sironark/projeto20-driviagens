@@ -1,7 +1,7 @@
 import { serviceGetFlights } from "../services/travelService.js";
 
 export async function getFlights(req, res){
-    
-    const answare = await serviceGetFlights();
+    const query = req.query
+    const answare = await serviceGetFlights(query);
     res.send(answare);
 }

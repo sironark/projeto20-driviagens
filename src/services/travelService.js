@@ -1,6 +1,6 @@
 import { conflictError, incompleteDataError, notFoundError } from "../errors/errors.js";
 import converterDataFormato, { converterDataDefault } from "./dateFormatService.js";
-import { getFlightsDB, postCityDB, postFlightDB, postTravelDB, verifyCityByIdDB, verifyCityDB, verifyFlightById, verifyPassengerById } from "../repository/posts.repository.js";
+import { getFlightsDB, getFlightsQueryDB, getFlightsQueryDestinationDB, getFlightsQueryOriginDB, postCityDB, postFlightDB, postTravelDB, verifyCityByIdDB, verifyCityDB, verifyFlightById, verifyPassengerById } from "../repository/posts.repository.js";
 import dayjs from "dayjs";
 
 export async function serviceCity(name){
@@ -47,8 +47,23 @@ export async function serviceTravels(passengerId, flightId){
     return answare.rows[0];
 }
 
-export async function serviceGetFlights(){
-    const answare = await getFlightsDB();
-    return answare.rows;
-
+export async function serviceGetFlights(query){
+    if(Object.keys(query).length){
+        const {origin, destination} = query;
+        
+        if(origin && !destination){ 
+            const answare = await getFlightsQueryOriginDB(origin);
+            return answare.rows;
+        } else  if(origin && destination){ 
+            const answare = await getFlightsQueryDB(origin, destination);
+            return answare.rows;
+        } else if(!origin && destination){
+            const answare = await getFlightsQueryDestinationDB(destination);
+            return answare.rows;
+        }
+        
+    } else{
+        const answare = await getFlightsDB();
+        return answare.rows;
+    }    
 }
