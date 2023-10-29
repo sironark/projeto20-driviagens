@@ -1,6 +1,6 @@
 import { conflictError, incompleteDataError, notFoundError } from "../errors/errors.js";
 import converterDataFormato, { converterDataDefault } from "./dateFormatService.js";
-import { postCityDB, postFlightDB, verifyCityByIdDB, verifyCityDB } from "../repository/posts.repository.js";
+import { postCityDB, postFlightDB, postTravelDB, verifyCityByIdDB, verifyCityDB, verifyFlightById, verifyPassengerById } from "../repository/posts.repository.js";
 import dayjs from "dayjs";
 
 export async function serviceCity(name){
@@ -34,4 +34,15 @@ export async function serviceFlights(origin, destination, date){
     }
     
     return newAnsware
+}
+
+export async function serviceTravels(passengerId, flightId){
+    const verifyPassenger = await verifyPassengerById(passengerId);
+    const verifyFlight = await verifyFlightById(flightId);
+
+    if(!verifyPassenger.rowCount || !verifyFlight.rowCount) throw notFoundError();
+
+    const answare = await postTravelDB(passengerId, flightId);
+
+    return answare.rows[0];
 }
