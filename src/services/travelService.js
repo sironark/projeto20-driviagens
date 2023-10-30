@@ -25,7 +25,7 @@ export async function serviceFlights(origin, destination, date){
     
     if (!verifyOrigin.rowCount || !verifyDestination.rowCount) throw notFoundError();
 
-    const answare = await postFlightDB(origin, destination, date);
+    const answare = await postFlightDB(origin, destination, receivedData);
     const editDate =  converterDataFormato(answare.rows[0].date);
     const newAnsware = {
         id: answare.rows[0].id,
